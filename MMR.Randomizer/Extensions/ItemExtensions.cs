@@ -7,6 +7,8 @@ using MMR.Randomizer.GameObjects;
 using MMR.Common.Extensions;
 using MMR.Randomizer.Attributes.Entrance;
 using System.Text.RegularExpressions;
+using MMR.Randomizer.Models.Settings;
+using MMR.Randomizer.Utils;
 
 namespace MMR.Randomizer.Extensions
 {
@@ -166,5 +168,35 @@ namespace MMR.Randomizer.Extensions
             return item.IsEntrance() == other.IsEntrance()
                 && item.IsBottleCatchContent() == other.IsBottleCatchContent();
         }
+
+        public static ItemType GetItemType(this Item item, GameplaySettings settings)
+        {
+            if (item.IsEntrance())
+            {
+                if (!settings.DecoupleEntrances && !item.Pair().HasValue)
+                {
+                    return ItemType.OneWayEntrance;
+                }
+                return ItemType.Entrance;
+            }
+            if (item.IsBottleCatchContent())
+            {
+                return ItemType.Scoop;
+            }
+            if (ItemUtils.IsSong(item) && !settings.AddSongs)
+            {
+                return ItemType.Song;
+            }
+            return ItemType.Item;
+        }
+    }
+
+    public enum ItemType
+    {
+        Item,
+        Song,
+        Scoop,
+        Entrance,
+        OneWayEntrance,
     }
 }

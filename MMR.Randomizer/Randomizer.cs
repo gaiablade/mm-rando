@@ -955,6 +955,187 @@ namespace MMR.Randomizer
             }
         }
 
+        private bool IsItemPlaced(Item item)
+        {
+            var itemObject = ItemList[item];
+            if (item.IsFake())
+            {
+                return itemObject.IsLocationAvailable;
+                //return itemObject.DependsOnItems.All(IsItemPlaced) && (itemObject.Conditionals.Count == 0 || itemObject.Conditionals.Any(c => c.All(IsItemPlaced)));
+            }
+            return itemObject.NewLocation.HasValue;
+        }
+
+        private int GetTimeAvailable(Item item)
+        {
+            var itemObject = ItemList[item];
+            if (item.IsFake())
+            {
+
+            }
+            return itemObject.TimeAvailable;
+        }
+
+        private int UpdateItemAvailability(List<ItemType> categoriesWithJunk)
+        {
+            int newlyAvailableCount = 0;
+            int fakeItemsChanged;
+            do
+            {
+                fakeItemsChanged = 0;
+                foreach (var itemObject in ItemList)
+                {
+                    var oldAvailability = itemObject.IsLocationAvailable;
+                    itemObject.IsLocationAvailable = itemObject.DependsOnItems.All(IsItemPlaced) && (itemObject.Conditionals.Count == 0 || itemObject.Conditionals.Any(c => c.All(IsItemPlaced)));
+                    if (itemObject.IsLocationAvailable != oldAvailability)
+                    {
+                        if (itemObject.Item.IsFake())
+                        {
+                            fakeItemsChanged++;
+                        }
+                        else if (itemObject.IsLocationAvailable && !categoriesWithJunk.Contains(itemObject.Item.GetItemType(_settings)))
+                        {
+                            newlyAvailableCount++;
+                        }
+                    }
+                    if (itemObject.IsLocationAvailable)
+                    {
+                        //itemObject.CalculatedTimeAvailable = itemObject.TimeAvailable & 
+                    }
+                }
+            } while (fakeItemsChanged > 0);
+            return newlyAvailableCount;
+        }
+        
+        private bool UndoStack(List<Item> lastStack, Dictionary<ItemType, List<Item>> categories)
+        {
+            foreach (var lastItem in lastStack.Where(i => ItemList[i].NewLocation.HasValue))
+            {
+                var lastLocation = ItemList[lastItem].NewLocation.Value;
+                ItemList[lastItem].NewLocation = null;
+                ItemList[lastLocation].HasPlacedItem = false;
+                categories[lastItem.GetItemType(_settings)].Add(lastItem);
+
+                if (lastItem.IsEntrance() && lastItem.Pair().HasValue)
+                {
+                    var pairLocation = lastItem.Pair().Value;
+                    var pairItem = lastLocation.Pair().Value;
+
+                    if (ItemList[pairItem].NewLocation.HasValue)
+                    {
+                        ItemList[pairItem].NewLocation = null;
+                        ItemList[pairLocation].HasPlacedItem = false;
+
+                        categories[pairItem.GetItemType(_settings)].Add(pairItem);
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        private void RandomizeItems2(IProgressReporter progressReporter)
+        {
+            var categories = ItemUtils.AllLocations()
+                .Concat(ItemUtils.AllEntrances())
+                .GroupBy(item => item.GetItemType(_settings))
+                .ToDictionary(g => g.Key, g => g.Except(ItemUtils.JunkItems).ToList());
+
+            var categoriesWithJunk = new List<ItemType>();
+
+            var placementStack = new List<List<Item>>();
+            placementStack.Add(new List<Item>());
+
+            while (categories.Any(kvp => kvp.Value.Any()))
+            {
+                progressReporter.ReportProgress(30, $"Shuffling items... {ItemList.Count(io => io.NewLocation.HasValue)}/{ItemList.Count(io => !io.Item.IsFake())}");
+
+                UpdateItemAvailability(categoriesWithJunk);
+
+                var availableLocations = ItemList.Where(io => io.IsLocationAvailable && !io.HasPlacedItem && !io.Item.IsFake()).Select(io => io.Item).ToList();
+
+                var lastStack = placementStack[placementStack.Count - 1];
+                if (availableLocations.Count(l => (!l.IsEntrance() || !l.Pair().HasValue || !lastStack.Contains(l.Pair().Value)) && !categoriesWithJunk.Contains(l.GetItemType(_settings))) == 0 && categories.Any(kvp => kvp.Value.Count > 0 && !categoriesWithJunk.Contains(kvp.Key)))
+                {
+                    if (!UndoStack(lastStack, categories))
+                    {
+                        placementStack.Remove(lastStack);
+                    }
+
+                    continue;
+                }
+
+                var location = availableLocations
+                    .GroupBy(i => categoriesWithJunk.Contains(i.GetItemType(_settings)))
+                    .OrderBy(g => g.Key)
+                    .First()
+                    .ToList()
+                    .Random(Random);
+                var category = location.GetItemType(_settings);
+                bool placed;
+                do
+                {
+
+                    var currentStack = placementStack[placementStack.Count - 1];
+                    var remainingItems = categories[category].Where(i => !currentStack.Contains(i)).ToList(); //  && (ItemList[i].TimeNeeded == 0 || (ItemList[i].TimeNeeded & ItemList[location].CalculatedTimeAvailable) != 0)
+
+                    //if (location.IsEntrance() && !_settings.DecoupleEntrances && location.Pair().HasValue && ItemList[location.Pair().Value].NewLocation.HasValue)
+                    //{
+                    //    var pair = ItemList[location.Pair().Value].NewLocation.Value.Pair().Value;
+                    //    remainingItems.RemoveAll(i => i != pair);
+                    //}
+
+                    if (remainingItems.Count == 0)
+                    {
+                        if (!UndoStack(currentStack, categories))
+                        {
+                            placementStack.Remove(currentStack);
+                        }
+
+                        UpdateItemAvailability(categoriesWithJunk);
+
+                        placed = true;
+                        continue;
+                    }
+
+                    var item = remainingItems.Random(Random);
+
+                    ItemList[item].NewLocation = location;
+                    placed = true;
+                    ItemList[location].HasPlacedItem = true;
+                    categories[category].Remove(item);
+
+                    placementStack[placementStack.Count - 1].Add(item);
+
+                    if (location.IsEntrance() && !_settings.DecoupleEntrances && location.Pair().HasValue)
+                    {
+                        var pairLocation = item.Pair().Value;
+                        var pairItem = location.Pair().Value;
+
+                        ItemList[pairItem].NewLocation = pairLocation;
+                        ItemList[pairLocation].HasPlacedItem = true;
+                        categories[category].Remove(pairItem);
+
+                        placementStack[placementStack.Count - 1].Add(pairItem);
+                    }
+
+                    if (UpdateItemAvailability(categoriesWithJunk) > 0)
+                    {
+                        placementStack.Add(new List<Item>());
+                    }
+
+                    if (categories[category].Count == 0 && !categoriesWithJunk.Contains(category))
+                    {
+                        categoriesWithJunk.Add(category);
+                        categories[category].AddRange(ItemUtils.JunkItems.Where(i => i.GetItemType(_settings) == category));
+                    }
+
+                } while (!placed);
+            }
+
+            _randomized.ItemList = ItemList;
+        }
+
         private void RandomizeItems()
         {
             if (_settings.UseCustomItemList)
@@ -1951,7 +2132,7 @@ namespace MMR.Randomizer
                 _randomized.Logic = ItemList.Select(io => new ItemLogic(io)).ToList();
 
                 progressReporter.ReportProgress(30, "Shuffling items...");
-                RandomizeItems();
+                RandomizeItems2(progressReporter);
                 
                 var freeItemIds = _settings.CustomStartingItemList
                     .Cast<int>()
