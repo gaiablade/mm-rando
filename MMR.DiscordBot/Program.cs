@@ -69,12 +69,14 @@ namespace MMR.DiscordBot
         {
             return new ServiceCollection()
                 .AddSingleton<MMRService>()
+                .AddSingleton<AsyncGenerationService>()
                 .AddSingleton<DiscordSocketClient>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandlingService>()
                 .AddSingleton<HttpClient>()
                 .AddSingleton<UserSeedRepository>()
                 .AddSingleton<GuildModRepository>()
+                .AddSingleton<AsyncSheetRepository>()
                 .AddSingleton<ConnectionFactory>()
                 .BuildServiceProvider();
         }

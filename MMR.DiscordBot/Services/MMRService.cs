@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,10 +35,9 @@ namespace MMR.DiscordBot.Services
             _httpClient.DefaultRequestHeaders.Add("User-Agent", "zoey.zolotova at gmail.com");
         }
 
-        public string GetSpoilerLogPath(DateTime seedDate)
+        public string GetSpoilerLogPath(string filenameWithoutExtension)
         {
-            var requestedLog = FileUtils.MakeFilenameValid(seedDate.ToString("o"));
-            return Path.Combine(_cliPath, "output", $"{requestedLog}_SpoilerLog.txt");
+            return Path.Combine(_cliPath, "output", $"{filenameWithoutExtension}_SpoilerLog.txt");
         }
 
         public string GetSettingsPath(ulong guildId, string settingName)
@@ -71,22 +71,20 @@ namespace MMR.DiscordBot.Services
             return Directory.EnumerateFiles(guildRoot);
         }
 
-        public async Task<(string patchPath, string hashIconPath, string spoilerLogPath)> GenerateSeed(DateTime now, string settingsPath)
+        public async Task<(string patchPath, string hashIconPath, string spoilerLogPath)> GenerateSeed(string filenameWithoutExtension, string settingsPath, int seed)
         {
-            await Task.Delay(1);
-            var filename = FileUtils.MakeFilenameValid(now.ToString("o"));
-            var attempts = 1; // TODO increase number of attempts and alter seed each attempt
-            while (attempts > 0)
+            var success = false;
+            while (!success)
             {
                 try
                 {
-                    var success = await GenerateSeed(filename, settingsPath);
+                    success = await RunMMRCLI(filenameWithoutExtension, settingsPath, seed);
                     if (success)
                     {
-                        var patchPath = Path.Combine(_cliPath, "output", $"{filename}.mmr");
+                        var patchPath = Path.Combine(_cliPath, "output", $"{filenameWithoutExtension}.mmr");
                         var hashIconPath = Path.ChangeExtension(patchPath, "png");
-                        var spoilerLogPath = GetSpoilerLogPath(now);
-                        if (File.Exists(patchPath) && File.Exists(hashIconPath))
+                        var spoilerLogPath = GetSpoilerLogPath(filenameWithoutExtension);
+                        if (File.Exists(patchPath) && File.Exists(hashIconPath) && File.Exists(spoilerLogPath))
                         {
                             return (patchPath, hashIconPath, spoilerLogPath);
                         }
@@ -98,20 +96,20 @@ namespace MMR.DiscordBot.Services
                 }
                 catch
                 {
-                    if (attempts == 1)
-                    {
-                        throw;
-                    }
+                    // TODO log error
+                    success = false;
                 }
-                attempts--;
+                if (!success)
+                {
+                    seed += _random.Next(int.MinValue, int.MaxValue);
+                }
             }
-            throw new Exception("Failed to generate seed after 5 attempts.");
+            throw new Exception("Failed to generate seed.");
         }
 
-        private async Task<bool> GenerateSeed(string filename, string settingsPath)
+        private async Task<bool> RunMMRCLI(string filenameWithoutExtension, string settingsPath, int seed)
         {
-            var output = Path.Combine("output", filename);
-            var seed = await GetSeed();
+            var output = Path.Combine("output", filenameWithoutExtension);
             var processInfo = new ProcessStartInfo("dotnet");
             processInfo.WorkingDirectory = _cliPath;
             processInfo.Arguments = $"{Path.Combine(_cliPath, @"MMR.CLI.dll")} -output \"{output}.z64\" -seed {seed} -spoiler -patch";
@@ -134,24 +132,24 @@ namespace MMR.DiscordBot.Services
             return proc.ExitCode == 0;
         }
 
-        private async Task<int> GetSeed()
+        public async Task<IEnumerable<int>> GetSeed(int num = 1)
         {
             await _semaphore.WaitAsync();
-            int seed;
+            IEnumerable<int> seeds;
             try
             {
-                var response = await _httpClient.GetStringAsync("https://www.random.org/integers/?num=1&min=-1000000000&max=1000000000&col=1&base=10&format=plain&rnd=new");
-                seed = int.Parse(response) + 1000000000;
+                var response = await _httpClient.GetStringAsync($"https://www.random.org/integers/?num={num}&min=-1000000000&max=1000000000&col=1&base=10&format=plain&rnd=new");
+                seeds = response.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(s => int.Parse(s) + 1000000000);
             }
             catch (HttpRequestException e)
             {
-                seed = _random.Next();
+                seeds = Enumerable.Range(0, num).Select(_ => _random.Next());
             }
             finally
             {
                 _semaphore.Release();
             }
-            return seed;
+            return seeds;
         }
     }
 }

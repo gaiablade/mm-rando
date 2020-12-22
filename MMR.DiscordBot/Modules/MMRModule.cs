@@ -12,6 +12,7 @@ using MMR.Common.Extensions;
 using System.Net;
 using System.Collections.Generic;
 using System.Threading;
+using MMR.Common.Utils;
 
 namespace MMR.DiscordBot.Modules
 {
@@ -21,6 +22,7 @@ namespace MMR.DiscordBot.Modules
         public UserSeedRepository UserSeedRepository { get; set; }
         public GuildModRepository GuildModRepository { get; set; }
         public MMRService MMRService { get; set; }
+        public AsyncGenerationService AsyncGenerationService { get; set; }
 
         private readonly IReadOnlyCollection<ulong> _tournamentChannels = new List<ulong>
         {
@@ -95,25 +97,20 @@ namespace MMR.DiscordBot.Modules
                 {
                     try
                     {
-                        (var patchPath, var hashIconPath, var spoilerLogPath) = await MMRService.GenerateSeed(DateTime.UtcNow, null);
-                        if (File.Exists(patchPath) && File.Exists(hashIconPath) && File.Exists(spoilerLogPath))
+                        var seed = (await MMRService.GetSeed()).Single();
+                        var filenameWithoutExtension = FileUtils.MakeFilenameValid(DateTime.UtcNow.ToString("o"));
+                        (var patchPath, var hashIconPath, var spoilerLogPath) = await MMRService.GenerateSeed(filenameWithoutExtension, null, seed);
+                        foreach (var user in mentionedUsers)
                         {
-                            foreach (var user in mentionedUsers)
-                            {
-                                await user.SendFileAsync(patchPath, "Here is your tournament match seed! Please be sure your Hash matches and let an organizer know if you have any issues before you begin.");
-                                await user.SendFileAsync(hashIconPath);
-                            }
-                            await Context.User.SendFileAsync(spoilerLogPath);
-                            await Context.User.SendFileAsync(hashIconPath);
-                            File.Delete(spoilerLogPath);
-                            File.Delete(patchPath);
-                            File.Delete(hashIconPath);
-                            await tournamentSeedReply.ModifyAsync(mp => mp.Content = "Success.");
+                            await user.SendFileAsync(patchPath, "Here is your tournament match seed! Please be sure your Hash matches and let an organizer know if you have any issues before you begin.");
+                            await user.SendFileAsync(hashIconPath);
                         }
-                        else
-                        {
-                            throw new Exception("MMR.CLI succeeded, but output files not found.");
-                        }
+                        await Context.User.SendFileAsync(spoilerLogPath);
+                        await Context.User.SendFileAsync(hashIconPath);
+                        File.Delete(spoilerLogPath);
+                        File.Delete(patchPath);
+                        File.Delete(hashIconPath);
+                        await tournamentSeedReply.ModifyAsync(mp => mp.Content = "Success.");
                     }
                     catch (Exception e)
                     {
@@ -149,7 +146,9 @@ namespace MMR.DiscordBot.Modules
             {
                 try
                 {
-                    (var patchPath, var hashIconPath, var spoilerLogPath) = await MMRService.GenerateSeed(now, settingName);
+                    var seed = (await MMRService.GetSeed()).Single();
+                    var filenameWithoutExtension = FileUtils.MakeFilenameValid(now.ToString("o"));
+                    (var patchPath, var hashIconPath, var spoilerLogPath) = await MMRService.GenerateSeed(filenameWithoutExtension, settingName, seed);
                     await Context.Channel.SendFileAsync(patchPath);
                     await Context.Channel.SendFileAsync(hashIconPath);
                     File.Delete(patchPath);
@@ -179,7 +178,8 @@ namespace MMR.DiscordBot.Modules
                 await ReplyAsync("You haven't generated any seeds recently.");
                 return;
             }
-            var spoilerLogFilename = MMRService.GetSpoilerLogPath(lastSeedRequest.Value);
+            var filenameWithoutExtension = FileUtils.MakeFilenameValid(lastSeedRequest.Value.ToString("o"));
+            var spoilerLogFilename = MMRService.GetSpoilerLogPath(filenameWithoutExtension);
             if (File.Exists(spoilerLogFilename))
             {
                 var result = await Context.Channel.SendFileAsync(spoilerLogFilename);
@@ -324,6 +324,28 @@ namespace MMR.DiscordBot.Modules
             }
 
             await ReplyAsync("List of settings:\n" + string.Join('\n', settingsPaths.Select(p => Path.GetFileNameWithoutExtension(p))));
+        }
+
+        [Command("async-generate")]
+        [RequireOwner]
+        public async Task AsyncGenerate()
+        {
+            var message = await ReplyAsync("Generating Async Seeds");
+            var sheetLink = await AsyncGenerationService.GenerateAsyncSheet((progressMessage) =>
+            {
+                return message.ModifyAsync(mp => mp.Content = progressMessage);
+            });
+
+            await message.DeleteAsync();
+
+            // post link to new sheet on discord
+            // TODO get previous async sheet date instead of assuming
+            await ReplyAsync(
+@$"{MentionUtils.MentionRole(630531640480890930)}
+**{DateTime.UtcNow.ToString("MMMM yyyy")} Asyncs**
+{sheetLink}
+
+Spoiler Logs for {DateTime.UtcNow.AddMonths(-1).ToString("MMMM yyyy")} Asyncs are now available.");
         }
     }
 }
