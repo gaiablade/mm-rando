@@ -29,6 +29,7 @@ namespace MMR.DiscordBot.Services
             {
                 throw new Exception($"'{_cliPath}' is not a valid MMR.CLI path.");
             }
+            Console.WriteLine($"{nameof(MMR_CLI)}: {_cliPath}");
 
             _httpClient = new HttpClient();
             _httpClient.Timeout = TimeSpan.FromSeconds(10);

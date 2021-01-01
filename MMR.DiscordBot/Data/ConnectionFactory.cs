@@ -16,6 +16,7 @@ namespace MMR.DiscordBot.Data
             {
                 db.CreateTableIfNotExists<UserSeedEntity>();
                 db.CreateTableIfNotExists<GuildModEntity>();
+                db.CreateTableIfNotExists<AsyncSheetEntity>();
             }
         }
     }
