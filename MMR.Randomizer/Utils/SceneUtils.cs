@@ -258,14 +258,13 @@ namespace MMR.Randomizer.Utils
                 }
             }
         }
-        
+
         private static void CheckHeaderForExits(int f, int headeraddr, Scene scene)
         {
             int j = headeraddr;
             int setupsaddr = -1;
             int nextlowest = -1;
             byte s;
-            if (DEBUG) { System.Diagnostics.Debug.WriteLine("Header"); }
             var setup = new SceneSetup();
             scene.Setups.Add(setup);
             while (true)

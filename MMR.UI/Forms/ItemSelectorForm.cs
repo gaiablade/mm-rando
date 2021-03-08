@@ -829,6 +829,36 @@ namespace MMR.UI.Forms
             "EntranceStoneTowerInvertedFromStoneTowerTempleInverted",
 
             "Great Bay Owl", "Zora Cape Owl", "Snowhead Owl", "Mountain Village Owl", "Clock Town Owl", "Milk Road Owl", "Woodfall Owl", "Southern Swamp Owl", "Ikana Canyon Owl", "Stone Tower Owl",
+
+
+            "GossipTerminaSouth",
+            "GossipSwampPotionShop",
+            "GossipMountainSpringPath",
+            "GossipMountainPath",
+            "GossipOceanZoraGame",
+            "GossipCanyonRoad",
+            "GossipCanyonDock",
+            "GossipCanyonSpiritHouse",
+            "GossipTerminaMilk",
+            "GossipTerminaWest",
+            "GossipTerminaNorth",
+            "GossipTerminaEast",
+            "GossipRanchTree",
+            "GossipRanchBarn",
+            "GossipMilkRoad",
+            "GossipOceanFortress",
+            "GossipSwampRoad",
+            "GossipTerminaObservatory",
+            "GossipRanchCuccoShack",
+            "GossipRanchRacetrack",
+            "GossipRanchEntrance",
+            "GossipCanyonRavine",
+            "GossipMountainSpringFrog",
+            "GossipSwampSpiderHouse",
+            "GossipTerminaGossipLarge",
+            "GossipTerminaGossipGuitar",
+            "GossipTerminaGossipPipes",
+            "GossipTerminaGossipDrums",
         };
 
         private static string[] ITEM_NAMES = DEFAULT_ITEM_NAMES.ToArray();
@@ -897,7 +927,7 @@ namespace MMR.UI.Forms
 
         private void lItems_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (lItems.CheckBoxes)
+            if (lItems.CheckBoxes || lItems.SelectedIndices.Count == 0)
             {
                 return;
             }

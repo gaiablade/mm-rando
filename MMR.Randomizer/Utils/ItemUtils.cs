@@ -107,7 +107,9 @@ namespace MMR.Randomizer.Utils
         {
             return Enum.GetValues(typeof(Item))
                 .Cast<Item>()
-                .Where(item => item.HasAttribute<StartingItemAttribute>());
+                .Where(item => item.HasAttribute<StartingItemAttribute>()
+                    || item.HasAttribute<StartingTingleMapAttribute>()
+                    || item.HasAttribute<StartingItemIdAttribute>());
         }
 
         // todo cache
@@ -131,7 +133,7 @@ namespace MMR.Randomizer.Utils
         }
 
         // todo cache
-        public static IEnumerable<int> AllGetItemIndices()
+        public static IEnumerable<ushort> AllGetItemIndices()
         {
             return Enum.GetValues(typeof(Item))
                 .Cast<Item>()
@@ -155,7 +157,7 @@ namespace MMR.Randomizer.Utils
         }
         public static bool IsJunk(Item item)
         {
-            return JunkItems.Contains(item);
+            return item == Item.RecoveryHeart || JunkItems.Contains(item);
         }
 
         public static bool IsRequired(Item item, RandomizedResult randomizedResult)
@@ -164,14 +166,16 @@ namespace MMR.Randomizer.Utils
                 && randomizedResult.ItemsRequiredForMoonAccess.Contains(item)
                 && !item.Name().Contains("Heart")
                 && !IsStrayFairy(item)
-                && !IsSkulltulaToken(item);
+                && !IsSkulltulaToken(item)
+                && item != Item.IceTrap;
         }
 
         public static bool IsImportant(Item item, RandomizedResult randomizedResult)
         {
             return randomizedResult.ImportantItems != null
                 && randomizedResult.ImportantItems.Contains(item)
-                && !item.Name().Contains("Heart");
+                && !item.Name().Contains("Heart")
+                && item != Item.IceTrap;
         }
 
         public static readonly ReadOnlyCollection<ReadOnlyCollection<Item>> ForbiddenStartTogether = new List<List<Item>>()

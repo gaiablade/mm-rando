@@ -16,6 +16,7 @@ namespace MMR.Randomizer.GameObjects
         MaskDeku,
 
         // items
+        [Progressive]
         [StartingItem(0xC5CE25, 0x01)]
         [StartingItem(0xC5CE6F, 0x01)]
         [ItemName("Hero's Bow"), LocationName("Hero's Bow Chest"), Region(Region.WoodfallTemple)]
@@ -49,6 +50,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x27)]
         ItemLightArrow,
 
+        [Progressive]
         [StartingItem(0xC5CE2A, 0x06)]
         [StartingItem(0xC5CE6F, 0x08)]
         [ItemName("Bomb Bag"), LocationName("Bomb Bag Purchase"), Region(Region.WestClockTown)]
@@ -102,6 +104,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x41)]
         ItemHookshot,
 
+        [Progressive]
         [StartingItem(0xC5CDED, 0x30)]
         [StartingItem(0xC5CDF4, 0x01)]
         [ItemName("Magic Power"), LocationName("Town Great Fairy Non-Human"), Region(Region.NorthClockTown)]
@@ -111,19 +114,20 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x12C)]
         FairyMagic,
         
-        // todo allow as starting item
+        [StartingItemId(0x9C)]
         [ItemName("Spin Attack"), LocationName("Woodfall Great Fairy"), Region(Region.Woodfall)]
-        [GossipLocationHint("a magical being"), GossipItemHint("a magic attack"), GossipCompetitiveHint(3, nameof(GameplaySettings.AddStrayFairies))]
+        [GossipLocationHint("a magical being"), GossipItemHint("a magic attack"), GossipCompetitiveHint(4, nameof(GameplaySettings.AddStrayFairies), false)]
         [ShopText("Increases the power of your spin attack.", isDefinite: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x12D)]
         FairySpinAttack,
 
+        [Progressive]
         [StartingItem(0xC5CDED, 0x60)]
         [StartingItem(0xC5CDF4, 0x01)]
         [StartingItem(0xC5CDF5, 0x01)]
         [ItemName("Extended Magic Power"), LocationName("Snowhead Great Fairy"), Region(Region.Snowhead)]
-        [GossipLocationHint("a magical being"), GossipItemHint("magic power"), GossipCompetitiveHint(3, nameof(GameplaySettings.AddStrayFairies))]
+        [GossipLocationHint("a magical being"), GossipItemHint("magic power"), GossipCompetitiveHint(4, nameof(GameplaySettings.AddStrayFairies), false)]
         [ShopText("Grants the ability to use lots of magic.", isMultiple: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x12E)]
@@ -132,7 +136,7 @@ namespace MMR.Randomizer.GameObjects
         [StartingItem(0xC5CDF6, 0x01)]
         [StartingItem(0xC5CE87, 0x14)]
         [ItemName("Double Defense"), LocationName("Ocean Great Fairy"), Region(Region.ZoraCape)]
-        [GossipLocationHint("a magical being"), GossipItemHint("magical defense"), GossipCompetitiveHint(3, nameof(GameplaySettings.AddStrayFairies))]
+        [GossipLocationHint("a magical being"), GossipItemHint("magical defense"), GossipCompetitiveHint(4, nameof(GameplaySettings.AddStrayFairies), false)]
         [ShopText("Take half as much damage from enemies.", isMultiple: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x12F)]
@@ -140,7 +144,7 @@ namespace MMR.Randomizer.GameObjects
 
         [StartingItem(0xC5CE34, 0x10)]
         [ItemName("Great Fairy's Sword"), LocationName("Ikana Great Fairy"), Region(Region.IkanaCanyon)]
-        [GossipLocationHint("a magical being"), GossipItemHint("a black rose", "a powerful blade"), GossipCompetitiveHint(3, nameof(GameplaySettings.AddStrayFairies))]
+        [GossipLocationHint("a magical being"), GossipItemHint("a black rose", "a powerful blade"), GossipCompetitiveHint(4, nameof(GameplaySettings.AddStrayFairies), false)]
         [ShopText("The most powerful sword has black roses etched in its blade.", isDefinite: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x130)]
@@ -150,7 +154,7 @@ namespace MMR.Randomizer.GameObjects
         [Repeatable, Temporary, Overwritable] // specially handled to turn into Red Potion on subsequent times
         [ItemName("Bottle with Red Potion"), LocationName("Kotake"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("the sleeping witch"), GossipItemHint("a vessel of health", "bottled fortitude")]
-        [ShopText("Replenishes your life energy. Comes with an Empty Bottle.")]
+        [ShopText("Replenishes your life energy.\u0009\u0001\u0000\u0000 Comes with an Empty Bottle.\u0009\u0002")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x59)]
         ItemBottleWitch,
@@ -159,7 +163,8 @@ namespace MMR.Randomizer.GameObjects
         [Repeatable, Temporary, Overwritable] // specially handled to turn into Milk on subsequent times
         [ItemName("Bottle with Milk"), LocationName("Aliens Defense"), Region(Region.RomaniRanch)]
         [GossipLocationHint("the ranch girl", "a good deed"), GossipItemHint("a dairy product", "the produce of cows")]
-        [ShopText("Recover five hearts with one drink. Contains two helpings. Comes with an Empty Bottle.")]
+        [GossipCombineOrder(0), GossipCombine(MaskRomani, "Ranch Sisters Defense")]
+        [ShopText("Recover five hearts with one drink. Contains two helpings.\u0009\u0001\u0000\u0000 Comes with an Empty Bottle.\u0009\u0002")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x60)]
         ItemBottleAliens,
@@ -168,8 +173,8 @@ namespace MMR.Randomizer.GameObjects
         //[StartingItem(0xC5CE38, 0x12)]
         [Repeatable, Temporary, Overwritable] // specially handled to turn into Gold Dust on subsequent times
         [ItemName("Bottle with Gold Dust"), LocationName("Goron Race"), Region(Region.TwinIslands)]
-        [GossipLocationHint("a sporting event"), GossipItemHint("a gleaming powder"), GossipCompetitiveHint]
-        [ShopText("It's very high quality. Comes with an Empty Bottle.")]
+        [GossipLocationHint("a sporting event"), GossipItemHint("a gleaming powder"), GossipCompetitiveHint(-2)]
+        [ShopText("It's very high quality.\u0009\u0001\u0000\u0000 Comes with an Empty Bottle.\u0009\u0002")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x6A)]
         ItemBottleGoronRace,
@@ -177,6 +182,7 @@ namespace MMR.Randomizer.GameObjects
         //[StartingItem(0xC5CE39, 0x12)]
         [ItemName("Empty Bottle"), LocationName("Beaver Race #1"), Region(Region.ZoraCape)]
         [GossipLocationHint("a river dweller"), GossipItemHint("an empty vessel", "a glass container"), GossipCompetitiveHint(-2)]
+        [GossipCombineOrder(0), GossipCombine(HeartPieceBeaverRace, "Beaver Races")]
         [ShopText("Carry various items in this.")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x5A)]
@@ -194,7 +200,7 @@ namespace MMR.Randomizer.GameObjects
         [Repeatable, Temporary, Overwritable] // specially handled to turn into Chateau Romani on subsequent times
         [ItemName("Bottle with Chateau Romani"), LocationName("Madame Aroma in Bar"), Region(Region.EastClockTown)]
         [GossipLocationHint("an important lady"), GossipItemHint("a dairy product", "an adult beverage")]
-        [ShopText("Drink it to get lasting stamina for your magic power. Comes with an Empty Bottle.")]
+        [ShopText("Drink it to get lasting stamina for your magic power.\u0009\u0001\u0000\u0000 Comes with an Empty Bottle.\u0009\u0002")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x6F)]
         ItemBottleMadameAroma,
@@ -208,7 +214,8 @@ namespace MMR.Randomizer.GameObjects
         ItemNotebook,
 
         //upgrades
-        [Repeatable]
+        [Progressive]
+        [Downgradable]
         [StartingItem(0xC5CE21, 0x02)]
         [StartingItem(0xC5CE00, 0x4E)]
         [ItemName("Razor Sword"), LocationName("Mountain Smithy Day 1"), Region(Region.MountainVillage)]
@@ -218,7 +225,8 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x38)]
         UpgradeRazorSword,
 
-        [Downgradable, Repeatable]
+        [Progressive]
+        [Downgradable]
         [StartingItem(0xC5CE21, 0x03)]
         [StartingItem(0xC5CE00, 0x4F)]
         [ItemName("Gilded Sword"), LocationName("Mountain Smithy Day 2"), Region(Region.MountainVillage)]
@@ -238,26 +246,32 @@ namespace MMR.Randomizer.GameObjects
         UpgradeMirrorShield,
 
         [RupeeRepeatable]
+        [Progressive]
+        [Downgradable]
         [StartingItem(0xC5CE25, 0x01)]
         [StartingItem(0xC5CE6F, 0x02)]
         [ItemName("Large Quiver"), LocationName("Town Archery #1"), Region(Region.EastClockTown)]
         [GossipLocationHint("a town activity"), GossipItemHint("a projectile", "a ranged weapon")]
+        [GossipCombineOrder(0), GossipCombine(HeartPieceTownArchery, "Town Archery")]
         [ShopText("This can hold up to a maximum of 40 arrows.")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x23)]
         UpgradeBigQuiver,
 
         [RupeeRepeatable]
+        [Progressive]
         [Downgradable]
         [StartingItem(0xC5CE25, 0x01)]
         [StartingItem(0xC5CE6F, 0x03)]
         [ItemName("Largest Quiver"), LocationName("Swamp Archery #1"), Region(Region.RoadToSouthernSwamp)]
         [GossipLocationHint("a swamp game"), GossipItemHint("a projectile", "a ranged weapon")]
+        [GossipCombineOrder(0), GossipCombine(HeartPieceSwampArchery, "Swamp Archery")]
         [ShopText("This can hold up to a maximum of 50 arrows.", isDefinite: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x24)]
         UpgradeBiggestQuiver,
 
+        [Progressive]
         [Downgradable]
         [StartingItem(0xC5CE2A, 0x06)]
         [StartingItem(0xC5CE6F, 0x10)]
@@ -272,7 +286,8 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1C)]
         UpgradeBigBombBag,
 
-        [Downgradable]
+        [Progressive]
+        [Downgradable, Purchaseable]
         [StartingItem(0xC5CE2A, 0x06)]
         [StartingItem(0xC5CE6F, 0x18)]
         [ItemName("Biggest Bomb Bag"), LocationName("Biggest Bomb Bag Purchase"), Region(Region.GoronVillage)]
@@ -282,6 +297,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1D)]
         UpgradeBiggestBombBag,
 
+        [Progressive]
         [StartingItem(0xC5CE6E, 0x10)]
         [ItemName("Adult Wallet"), LocationName("Bank Reward #1"), Region(Region.WestClockTown)]
         [GossipLocationHint("a keeper of wealth"), GossipItemHint("a coin case", "great wealth")]
@@ -290,16 +306,19 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x08)]
         UpgradeAdultWallet,
 
+        [Progressive]
         [Downgradable]
         [StartingItem(0xC5CE6E, 0x20)]
         [ItemName("Giant Wallet"), LocationName("Ocean Spider House Day 1 Reward"), Region(Region.GreatBayCoast)]
-        [GossipLocationHint("a gold spider"), GossipItemHint("a coin case", "great wealth"), GossipCompetitiveHint(0, nameof(GameplaySettings.AddSkulltulaTokens))]
+        [GossipLocationHint("a gold spider"), GossipItemHint("a coin case", "great wealth"), GossipCompetitiveHint(0, nameof(GameplaySettings.AddSkulltulaTokens), false)]
+        [GossipCombineOrder(0), GossipCombine(MundaneItemOceanSpiderHouseDay2PurpleRupee, "Ocean Spider House"), GossipCombine(MundaneItemOceanSpiderHouseDay3RedRupee, "Ocean Spider House")]
         [ShopText("This can hold up to a maximum of 500 rupees.")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x09)]
         UpgradeGiantWallet,
 
         //trades
+        [Visible]
         [Repeatable, Temporary, CycleRepeatable, Overwritable]
         [ItemName("Moon's Tear"), LocationName("Astronomy Telescope"), Region(Region.TerminaField)]
         [GossipLocationHint("a falling star"), GossipItemHint("a lunar teardrop", "celestial sadness")]
@@ -435,6 +454,7 @@ namespace MMR.Randomizer.GameObjects
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Deku Playground Three Days"), Region(Region.NorthClockTown)]
         [GossipLocationHint("a game for scrubs", "a playground", "a town game"), GossipItemHint("a segment of health"), GossipCompetitiveHint]
+        [GossipCombineOrder(1), GossipCombine(MundaneItemDekuPlaygroundPurpleRupee, "Deku Playground")]
         [ShopText("Collect four to assemble a new Heart Container.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0x31)]
@@ -444,6 +464,7 @@ namespace MMR.Randomizer.GameObjects
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Town Archery #2"), Region(Region.EastClockTown)]
         [GossipLocationHint("a town game"), GossipItemHint("a segment of health"), GossipCompetitiveHint(1)]
+        [GossipCombineOrder(1), GossipCombine(UpgradeBigQuiver, "Town Archery")]
         [ShopText("Collect four to assemble a new Heart Container.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0x90)]
@@ -452,6 +473,7 @@ namespace MMR.Randomizer.GameObjects
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Honey and Darling Three Days"), Region(Region.EastClockTown)]
         [GossipLocationHint("a town game"), GossipItemHint("a segment of health"), GossipCompetitiveHint(-2)]
+        [GossipCombineOrder(1), GossipCombine(MundaneItemHoneyAndDarlingPurpleRupee, "Honey and Darling")]
         [ShopText("Collect four to assemble a new Heart Container.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0x94)]
@@ -482,6 +504,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0xA3)]
         HeartPieceTerminaGossipStones,
 
+        [Purchaseable]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Business Scrub Purchase"), Region(Region.TerminaField)]
         [GossipLocationHint("a hidden merchant"), GossipItemHint("a segment of health")]
@@ -494,6 +517,7 @@ namespace MMR.Randomizer.GameObjects
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Swamp Archery #2"), Region(Region.RoadToSouthernSwamp)]
         [GossipLocationHint("a swamp game"), GossipItemHint("a segment of health"), GossipCompetitiveHint(1)]
+        [GossipCombineOrder(1), GossipCombine(UpgradeBiggestQuiver, "Swamp Archery")]
         [ShopText("Collect four to assemble a new Heart Container.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0xA6)]
@@ -518,7 +542,7 @@ namespace MMR.Randomizer.GameObjects
 
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Frog Choir"), Region(Region.MountainVillage)]
-        [GossipLocationHint("a reunion", "a chorus", "an amphibian choir"), GossipItemHint("a segment of health"), GossipCompetitiveHint(2)]
+        [GossipLocationHint("a reunion", "a chorus", "an amphibian choir"), GossipItemHint("a segment of health"), GossipCompetitiveHint(3)]
         [ShopText("Collect four to assemble a new Heart Container.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0xAC)]
@@ -528,6 +552,7 @@ namespace MMR.Randomizer.GameObjects
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Beaver Race #2"), Region(Region.ZoraCape)]
         [GossipLocationHint("a river dweller", "a race in the water"), GossipItemHint("a segment of health"), GossipCompetitiveHint(1)]
+        [GossipCombineOrder(1), GossipCombine(ItemBottleBeavers, "Beaver Races")]
         [ShopText("Collect four to assemble a new Heart Container.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0xAD)]
@@ -535,7 +560,7 @@ namespace MMR.Randomizer.GameObjects
 
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Seahorses"), Region(Region.PinnacleRock)]
-        [GossipLocationHint("a reunion"), GossipItemHint("a segment of health")]
+        [GossipLocationHint("a reunion"), GossipItemHint("a segment of health"), GossipCompetitiveHint(-2)]
         [ShopText("Collect four to assemble a new Heart Container.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0xAE)]
@@ -644,7 +669,7 @@ namespace MMR.Randomizer.GameObjects
 
         [StartingItem(0xC5CE3D, 0x38)]
         [ItemName("All Night Mask"), LocationName("All Night Mask Purchase"), Region(Region.WestClockTown)]
-        [GossipLocationHint("a shady gentleman", "a dodgy seller", "a shady dealer"), GossipItemHint("insomnia"), GossipCompetitiveHint(0, nameof(GameplaySettings.UpdateShopAppearance))]
+        [GossipLocationHint("a shady gentleman", "a dodgy seller", "a shady dealer"), GossipItemHint("insomnia"), GossipCompetitiveHint(0, nameof(GameplaySettings.UpdateShopAppearance), false)]
         [ShopRoom(ShopRoomAttribute.Room.CuriosityShop, 0x54)]
         [ShopInventory(ShopInventoryAttribute.ShopKeeper.CuriosityShop, 0)]
         [ShopText("When you wear it you don't get sleepy.")]
@@ -720,6 +745,7 @@ namespace MMR.Randomizer.GameObjects
         [StartingItem(0xC5CE48, 0x3C)]
         [ItemName("Romani's Mask"), LocationName("Cremia"), Region(Region.RomaniRanch)]
         [GossipLocationHint("the ranch lady", "an older sister"), GossipItemHint("proof of membership", "a cow's mask"), GossipCompetitiveHint]
+        [GossipCombineOrder(1), GossipCombine(ItemBottleAliens, "Ranch Sisters Defense")]
         [ShopText("Wear it to show you're a member of the Milk Bar, Latte.", isMultiple: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x82)]
@@ -743,7 +769,7 @@ namespace MMR.Randomizer.GameObjects
 
         [StartingItem(0xC5CE4B, 0x3F)]
         [ItemName("Couple's Mask"), LocationName("Anju and Kafei"), Region(Region.StockPotInn)]
-        [GossipLocationHint("a reunion", "a lovers' reunion"), GossipItemHint("a sign of love", "the mark of a couple"), GossipCompetitiveHint(2)]
+        [GossipLocationHint("a reunion", "a lovers' reunion"), GossipItemHint("a sign of love", "the mark of a couple"), GossipCompetitiveHint(3)]
         [ShopText("When you wear it, you can soften people's hearts.")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x85)]
@@ -751,7 +777,7 @@ namespace MMR.Randomizer.GameObjects
 
         [StartingItem(0xC5CE4C, 0x36)]
         [ItemName("Mask of Truth"), LocationName("Swamp Spider House Reward"), Region(Region.SouthernSwamp)]
-        [GossipLocationHint("a gold spider"), GossipItemHint("a piercing gaze"), GossipCompetitiveHint(0, nameof(GameplaySettings.AddSkulltulaTokens))]
+        [GossipLocationHint("a gold spider"), GossipItemHint("a piercing gaze"), GossipCompetitiveHint(0, nameof(GameplaySettings.AddSkulltulaTokens), false)]
         [ShopText("Wear it to read the thoughts of Gossip Stones and animals.", isDefinite: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x8A)]
@@ -866,7 +892,7 @@ namespace MMR.Randomizer.GameObjects
 
         [StartingItem(0xC5CE72, 0x01)]
         [ItemName("New Wave Bossa Nova"), LocationName("Baby Zoras"), Region(Region.GreatBayCoast)]
-        [GossipLocationHint("the lost children", "the pirates' loot"), GossipItemHint("an ocean roar", "a song of newborns")]
+        [GossipLocationHint("the lost children", "the pirates' loot"), GossipItemHint("an ocean roar", "a song of newborns"), GossipCompetitiveHint(2, nameof(GameplaySettings.AddSongs), true)]
         [ShopText("It's the melody taught by the Zora children that invigorates singing voices.", isDefinite: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
         [GetItemIndex(0x75)]
@@ -877,9 +903,10 @@ namespace MMR.Randomizer.GameObjects
         [GossipLocationHint("a fallen king", "a battle in darkness"), GossipItemHint("empty shells", "skin shedding")]
         [ShopText("It's a mystical song that allows you to shed a shell shaped in your current image.", isDefinite: true)]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
-        [GetItemIndex(0x76)]
+        [GetItemIndex(0x1CB)] // 0x76 is a special value used for ice traps in chests
         SongElegy,
 
+        [Visible]
         [StartingItem(0xC5CE72, 0x04)]
         [ItemName("Oath to Order"), LocationName("Boss Blue Warp"), Region(Region.Misc)]
         [GossipLocationHint("cleansed evil", "a fallen evil"), GossipItemHint("a song of summoning", "a song of giants")]
@@ -892,30 +919,38 @@ namespace MMR.Randomizer.GameObjects
         AreaSouthAccess,
 
         [EntranceName("Woodfall")]
+        [DungeonEntrance(DungeonEntrance.EntranceWoodfallTempleFromWoodfall, DungeonEntrance.EntranceWoodfallFromWoodfallTempleEntrance)]
         AreaWoodFallTempleAccess,
 
+        [DungeonEntrance(DungeonEntrance.EntranceWoodfallTemplePrisonFromOdolwasLair)]
         AreaWoodFallTempleClear,
         AreaNorthAccess,
 
         [EntranceName("Snowhead")]
+        [DungeonEntrance(DungeonEntrance.EntranceSnowheadTempleFromSnowhead, DungeonEntrance.EntranceSnowheadFromSnowheadTemple)]
         AreaSnowheadTempleAccess,
 
+        [DungeonEntrance(DungeonEntrance.EntranceMountainVillageFromSnowheadClear)]
         AreaSnowheadTempleClear,
         OtherEpona,
         AreaWestAccess,
         AreaPiratesFortressAccess,
 
         [EntranceName("Great Bay")]
+        [DungeonEntrance(DungeonEntrance.EntranceGreatBayTempleFromZoraCape, DungeonEntrance.EntranceZoraCapeFromGreatBayTemple)]
         AreaGreatBayTempleAccess,
 
+        [DungeonEntrance(DungeonEntrance.EntranceZoraCapeFromGreatBayTempleClear)]
         AreaGreatBayTempleClear,
         AreaEastAccess,
         AreaIkanaCanyonAccess,
         AreaStoneTowerTempleAccess,
 
         [EntranceName("Inverted Stone Tower")]
+        [DungeonEntrance(DungeonEntrance.EntranceStoneTowerTempleInvertedFromStoneTowerInverted, DungeonEntrance.EntranceStoneTowerInvertedFromStoneTowerTempleInverted)]
         AreaInvertedStoneTowerTempleAccess,
 
+        [DungeonEntrance(DungeonEntrance.EntranceIkanaCanyonFromIkanaClear)]
         AreaStoneTowerClear,
         OtherExplosive,
         OtherArrow,
@@ -1813,6 +1848,7 @@ namespace MMR.Randomizer.GameObjects
         HeartPieceBank,
 
         //standing HPs
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Clock Tower Entrance"), Region(Region.SouthClockTown)]
         [GossipLocationHint("the tower doors"), GossipItemHint("a segment of health")]
@@ -1821,6 +1857,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x10B)]
         HeartPieceSouthClockTown,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("North Clock Town Tree"), Region(Region.NorthClockTown)]
         [GossipLocationHint("a town playground"), GossipItemHint("a segment of health")]
@@ -1829,6 +1866,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x10C)]
         HeartPieceNorthClockTown,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Path to Swamp Tree"), Region(Region.RoadToSouthernSwamp)]
         [GossipLocationHint("a tree of bats"), GossipItemHint("a segment of health")]
@@ -1837,6 +1875,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x10D)]
         HeartPieceToSwamp,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Swamp Tourist Center Roof"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a tourist centre"), GossipItemHint("a segment of health")]
@@ -1845,6 +1884,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x10E)]
         HeartPieceSwampScrub,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Deku Palace West Garden"), Region(Region.DekuPalace)]
         [GossipLocationHint("the home of scrubs"), GossipItemHint("a segment of health")]
@@ -1853,6 +1893,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x10F)]
         HeartPieceDekuPalace,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Goron Village Ledge"), Region(Region.GoronVillage)]
         [GossipLocationHint("a cold ledge"), GossipItemHint("a segment of health")]
@@ -1861,6 +1902,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x110)]
         HeartPieceGoronVillageScrub,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Bio Baba Grotto"), Region(Region.TerminaField)]
         [GossipLocationHint("a beehive"), GossipItemHint("a segment of health")]
@@ -1869,14 +1911,16 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x111)]
         HeartPieceZoraGrotto,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Lab Fish"), Region(Region.GreatBayCoast)]
-        [GossipLocationHint("feeding the fish"), GossipItemHint("a segment of health"), GossipCompetitiveHint(0, nameof(GameplaySettings.SpeedupLabFish))]
+        [GossipLocationHint("feeding the fish"), GossipItemHint("a segment of health"), GossipCompetitiveHint(0, nameof(GameplaySettings.SpeedupLabFish), false)]
         [ShopText("Collect four to assemble a new Heart Container.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0x112)]
         HeartPieceLabFish,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Zora Cape Like-Like"), Region(Region.ZoraCape)]
         [GossipLocationHint("a shield eater"), GossipItemHint("a segment of health")]
@@ -1885,6 +1929,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x113)]
         HeartPieceGreatBayCapeLikeLike,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Pirates' Fortress Cage"), Region(Region.PiratesFortressSewer)]
         [GossipLocationHint("a timed door"), GossipItemHint("a segment of health")]
@@ -1893,6 +1938,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x114)]
         HeartPiecePiratesFortress,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Lulu's Room Ledge"), Region(Region.ZoraHall)]
         [GossipLocationHint("the singer's room"), GossipItemHint("a segment of health")]
@@ -1901,6 +1947,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x115)]
         HeartPieceZoraHallScrub,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Path to Snowhead Pillar"), Region(Region.PathToSnowhead)]
         [GossipLocationHint("a cold platform"), GossipItemHint("a segment of health")]
@@ -1909,6 +1956,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x116)]
         HeartPieceToSnowhead,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Great Bay Coast Ledge"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a rock face"), GossipItemHint("a segment of health")]
@@ -1917,6 +1965,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x117)]
         HeartPieceGreatBayCoast,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Ikana Canyon Ledge"), Region(Region.IkanaCanyon)]
         [GossipLocationHint("a thief's doorstep"), GossipItemHint("a segment of health")]
@@ -1925,6 +1974,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x118)]
         HeartPieceIkana,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Ikana Castle Pillar"), Region(Region.IkanaCastle)]
         [GossipLocationHint("a fiery pillar"), GossipItemHint("a segment of health")]
@@ -1933,6 +1983,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x119)]
         HeartPieceCastle,
 
+        [Visible]
         [StartingItem(0xC5CDE9, 0x10, true)] // add max health
         [StartingItem(0xC5CDEB, 0x10, true)] // add current health
         [StartingItem(0xC40E1B, 0x10, true)] // add respawn health
@@ -1945,6 +1996,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x11A)]
         HeartContainerWoodfall,
 
+        [Visible]
         [StartingItem(0xC5CDE9, 0x10, true)] // add max health
         [StartingItem(0xC5CDEB, 0x10, true)] // add current health
         [StartingItem(0xC40E1B, 0x10, true)] // add respawn health
@@ -1957,6 +2009,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x11B)]
         HeartContainerSnowhead,
 
+        [Visible]
         [StartingItem(0xC5CDE9, 0x10, true)] // add max health
         [StartingItem(0xC5CDEB, 0x10, true)] // add current health
         [StartingItem(0xC40E1B, 0x10, true)] // add respawn health
@@ -1969,6 +2022,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x11C)]
         HeartContainerGreatBay,
 
+        [Visible]
         [StartingItem(0xC5CDE9, 0x10, true)] // add max health
         [StartingItem(0xC5CDEB, 0x10, true)] // add current health
         [StartingItem(0xC40E1B, 0x10, true)] // add respawn health
@@ -1982,6 +2036,8 @@ namespace MMR.Randomizer.GameObjects
         HeartContainerStoneTower,
 
         //maps
+        [Purchaseable]
+        [StartingTingleMap(TingleMap.Town)]
         [ItemName("Map of Clock Town"), LocationName("Clock Town Map Purchase"), Region(Region.NorthClockTown)]
         [GossipLocationHint("a map maker", "a forest fairy"), GossipItemHint("a world map")]
         [ShopText("Map of Clock Town.")]
@@ -1989,6 +2045,8 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0xB4)]
         ItemTingleMapTown,
 
+        [Purchaseable]
+        [StartingTingleMap(TingleMap.Swamp)]
         [ItemName("Map of Woodfall"), LocationName("Woodfall Map Purchase"), Region(Region.RoadToSouthernSwamp)]
         [GossipLocationHint("a map maker", "a forest fairy"), GossipItemHint("a world map")]
         [ShopText("Map of the south.")]
@@ -1996,6 +2054,8 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0xB5)]
         ItemTingleMapWoodfall,
 
+        [Purchaseable]
+        [StartingTingleMap(TingleMap.Mountain)]
         [ItemName("Map of Snowhead"), LocationName("Snowhead Map Purchase"), Region(Region.RoadToSouthernSwamp)]
         [GossipLocationHint("a map maker", "a forest fairy"), GossipItemHint("a world map")]
         [ShopText("Map of the north.")]
@@ -2003,6 +2063,8 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0xB6)]
         ItemTingleMapSnowhead,
 
+        [Purchaseable]
+        [StartingTingleMap(TingleMap.Ranch)]
         [ItemName("Map of Romani Ranch"), LocationName("Romani Ranch Map Purchase"), Region(Region.MilkRoad)]
         [GossipLocationHint("a map maker", "a forest fairy"), GossipItemHint("a world map")]
         [ShopText("Map of the ranch.")]
@@ -2010,6 +2072,8 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0xB7)]
         ItemTingleMapRanch,
 
+        [Purchaseable]
+        [StartingTingleMap(TingleMap.Ocean)]
         [ItemName("Map of Great Bay"), LocationName("Great Bay Map Purchase"), Region(Region.MilkRoad)]
         [GossipLocationHint("a map maker", "a forest fairy"), GossipItemHint("a world map")]
         [ShopText("Map of the west.")]
@@ -2017,6 +2081,8 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0xB8)]
         ItemTingleMapGreatBay,
 
+        [Purchaseable]
+        [StartingTingleMap(TingleMap.Canyon)]
         [ItemName("Map of Stone Tower"), LocationName("Stone Tower Map Purchase"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a map maker", "a forest fairy"), GossipItemHint("a world map")]
         [ShopText("Map of the east.")]
@@ -2048,6 +2114,7 @@ namespace MMR.Randomizer.GameObjects
         OtherFourMasks,
         AreaMoonAccess,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Deku Trial Bonus"), Region(Region.TheMoon)]
         [GossipLocationHint("a masked child's game"), GossipItemHint("a segment of health")]
@@ -2056,6 +2123,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x11F)]
         HeartPieceDekuTrial,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Goron Trial Bonus"), Region(Region.TheMoon)]
         [GossipLocationHint("a masked child's game"), GossipItemHint("a segment of health")]
@@ -2064,6 +2132,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x120)]
         HeartPieceGoronTrial,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Zora Trial Bonus"), Region(Region.TheMoon)]
         [GossipLocationHint("a masked child's game"), GossipItemHint("a segment of health")]
@@ -2072,6 +2141,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x121)]
         HeartPieceZoraTrial,
 
+        [Visible]
         [StartingItem(0xC5CE70, 0x10, true)]
         [ItemName("Piece of Heart"), LocationName("Link Trial Bonus"), Region(Region.TheMoon)]
         [GossipLocationHint("a masked child's game"), GossipItemHint("a segment of health")]
@@ -2112,6 +2182,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x128)]
         ChestPreClocktownDekuNut,
 
+        [Progressive]
         [StartingItem(0xC5CE21, 0x01)]
         [StartingItem(0xC5CE00, 0x4D)]
         [ItemName("Kokiri Sword"), LocationName("Starting Sword"), Region(Region.Misc)]
@@ -2218,6 +2289,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x139)]
         ItemCoastGrottoCowMilk2,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Main Room Near Ceiling"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2225,6 +2297,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x13A)]
         CollectibleSwampSpiderToken1,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Gold Room Near Ceiling"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2232,6 +2305,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x13B)]
         CollectibleSwampSpiderToken2,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Monument Room Torch"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2239,6 +2313,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x13C)]
         CollectibleSwampSpiderToken3,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Gold Room Pillar"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2246,6 +2321,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x13E)]
         CollectibleSwampSpiderToken4,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Pot Room Jar"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2253,6 +2329,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x13F)]
         CollectibleSwampSpiderToken5,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Tree Room Grass 1"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2260,6 +2337,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x140)]
         CollectibleSwampSpiderToken6,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Tree Room Grass 2"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2267,6 +2345,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x141)]
         CollectibleSwampSpiderToken7,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Main Room Water"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2274,6 +2353,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x142)]
         CollectibleSwampSpiderToken8,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Main Room Lower Left Soft Soil"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2281,6 +2361,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x143)]
         CollectibleSwampSpiderToken9,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Monument Room Crate 1"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2288,6 +2369,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x144)]
         CollectibleSwampSpiderToken10,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Main Room Upper Soft Soil"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2295,6 +2377,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x145)]
         CollectibleSwampSpiderToken11,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Main Room Lower Right Soft Soil"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2302,6 +2385,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x146)]
         CollectibleSwampSpiderToken12,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Monument Room Lower Wall"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2309,6 +2393,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x147)]
         CollectibleSwampSpiderToken13,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Monument Room On Monument"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2316,6 +2401,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x148)]
         CollectibleSwampSpiderToken14,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Main Room Pillar"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2323,6 +2409,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x149)]
         CollectibleSwampSpiderToken15,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Pot Room Pot 1"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2330,6 +2417,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x14A)]
         CollectibleSwampSpiderToken16,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Pot Room Pot 2"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2337,6 +2425,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x14B)]
         CollectibleSwampSpiderToken17,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Gold Room Hive"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2344,6 +2433,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x14C)]
         CollectibleSwampSpiderToken18,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Main Room Upper Pillar"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2351,6 +2441,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x14D)]
         CollectibleSwampSpiderToken19,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Pot Room Behind Vines"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2358,6 +2449,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x14E)]
         CollectibleSwampSpiderToken20,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Tree Room Tree 1"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2365,6 +2457,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x14F)]
         CollectibleSwampSpiderToken21,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Pot Room Wall"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2372,6 +2465,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x150)]
         CollectibleSwampSpiderToken22,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Pot Room Hive 1"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2379,6 +2473,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x151)]
         CollectibleSwampSpiderToken23,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Tree Room Tree 2"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2386,6 +2481,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x152)]
         CollectibleSwampSpiderToken24,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Gold Room Wall"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2393,6 +2489,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x153)]
         CollectibleSwampSpiderToken25,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Tree Room Hive"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2400,6 +2497,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x154)]
         CollectibleSwampSpiderToken26,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Monument Room Crate 2"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2407,6 +2505,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x155)]
         CollectibleSwampSpiderToken27,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Pot Room Hive 2"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2414,6 +2513,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x156)]
         CollectibleSwampSpiderToken28,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Tree Room Tree 3"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2421,6 +2521,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x157)]
         CollectibleSwampSpiderToken29,
 
+        [Visible]
         [ItemName("Swamp Skulltula Spirit"), LocationName("Swamp Skulltula Main Room Jar"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the swamp spider house.")]
@@ -2428,6 +2529,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x158)]
         CollectibleSwampSpiderToken30,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Storage Room Behind Boat"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2435,6 +2537,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x159)]
         CollectibleOceanSpiderToken1,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Library Hole Behind Picture"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2442,6 +2545,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x15A)]
         CollectibleOceanSpiderToken2,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Library Hole Behind Cabinet"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2449,6 +2553,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x15B)]
         CollectibleOceanSpiderToken3,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Library On Corner Bookshelf"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2456,6 +2561,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x15C)]
         CollectibleOceanSpiderToken4,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Ceiling Edge"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2463,6 +2569,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x15D)]
         CollectibleOceanSpiderToken5,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Ceiling Plank"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2470,6 +2577,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x15E)]
         CollectibleOceanSpiderToken6,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Colored Skulls Ceiling Edge"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2477,6 +2585,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x15F)]
         CollectibleOceanSpiderToken7,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Library Ceiling Edge"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2484,6 +2593,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x160)]
         CollectibleOceanSpiderToken8,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Storage Room Ceiling Web"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2491,6 +2601,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x161)]
         CollectibleOceanSpiderToken9,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Storage Room Behind Crate"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2498,6 +2609,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x162)]
         CollectibleOceanSpiderToken10,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Jar"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2505,6 +2617,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x163)]
         CollectibleOceanSpiderToken11,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Entrance Right Wall"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2512,6 +2625,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x164)]
         CollectibleOceanSpiderToken12,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Entrance Left Wall"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2519,6 +2633,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x165)]
         CollectibleOceanSpiderToken13,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Webbed Hole"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2526,6 +2641,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x166)]
         CollectibleOceanSpiderToken14,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Entrance Web"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2533,6 +2649,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x167)]
         CollectibleOceanSpiderToken15,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Colored Skulls Chandelier 1"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2540,6 +2657,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x168)]
         CollectibleOceanSpiderToken16,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Colored Skulls Chandelier 2"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2547,6 +2665,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x169)]
         CollectibleOceanSpiderToken17,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Colored Skulls Chandelier 3"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2554,6 +2673,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x16A)]
         CollectibleOceanSpiderToken18,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Colored Skulls Behind Picture"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2561,6 +2681,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x16B)]
         CollectibleOceanSpiderToken19,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Library Behind Picture"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2568,6 +2689,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x16C)]
         CollectibleOceanSpiderToken20,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Library Behind Bookcase 1"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2575,6 +2697,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x16D)]
         CollectibleOceanSpiderToken21,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Storage Room Crate"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2582,6 +2705,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x16E)]
         CollectibleOceanSpiderToken22,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Webbed Pot"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2589,6 +2713,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x16F)]
         CollectibleOceanSpiderToken23,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Upper Pot"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2596,6 +2721,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x170)]
         CollectibleOceanSpiderToken24,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Colored Skulls Pot"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2603,6 +2729,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x171)]
         CollectibleOceanSpiderToken25,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Storage Room Jar"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2610,6 +2737,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x172)]
         CollectibleOceanSpiderToken26,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Lower Pot"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2617,6 +2745,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x173)]
         CollectibleOceanSpiderToken27,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula Library Behind Bookcase 2"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2624,6 +2753,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x174)]
         CollectibleOceanSpiderToken28,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Behind Skull 1"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2631,6 +2761,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x175)]
         CollectibleOceanSpiderToken29,
 
+        [Visible]
         [ItemName("Ocean Skulltula Spirit"), LocationName("Ocean Skulltula 2nd Room Behind Skull 2"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a golden spider"), GossipItemHint("a golden token")]
         [ShopText("Collect 30 to lift the curse in the ocean spider house.")]
@@ -2638,6 +2769,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x176)]
         CollectibleOceanSpiderToken30,
 
+        [Visible]
         [ItemName("Clock Town Stray Fairy"), LocationName("Clock Town Stray Fairy"), Region(Region.LaundryPool)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Return it to the Fairy Fountain in North Clock Town.")]
@@ -2646,6 +2778,7 @@ namespace MMR.Randomizer.GameObjects
         //[GetItemIndex(0x1A1)] // used as a flag to track if the actual fairy has been collected.
         CollectibleStrayFairyClockTown,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Pre-Boss Lower Right Bubble"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2653,6 +2786,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x177)]
         CollectibleStrayFairyWoodfall1,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Entrance Fairy"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2660,6 +2794,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x178)]
         CollectibleStrayFairyWoodfall2,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Pre-Boss Upper Left Bubble"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2667,6 +2802,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x179)]
         CollectibleStrayFairyWoodfall3,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Pre-Boss Pillar Bubble"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2674,6 +2810,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x17A)]
         CollectibleStrayFairyWoodfall4,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Deku Baba"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2681,6 +2818,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x17B)]
         CollectibleStrayFairyWoodfall5,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Poison Water Bubble"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2688,6 +2826,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x17C)]
         CollectibleStrayFairyWoodfall6,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Main Room Bubble"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2695,6 +2834,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x17D)]
         CollectibleStrayFairyWoodfall7,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Skulltula"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2702,6 +2842,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x17E)]
         CollectibleStrayFairyWoodfall8,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Pre-Boss Upper Right Bubble"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2709,6 +2850,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x17F)]
         CollectibleStrayFairyWoodfall9,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Main Room Switch"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2716,6 +2858,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x184)]
         CollectibleStrayFairyWoodfall10,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Entrance Platform"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2723,6 +2866,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x185)]
         CollectibleStrayFairyWoodfall11,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Dark Room"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2730,6 +2874,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x186)]
         CollectibleStrayFairyWoodfall12,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Jar Fairy"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2737,6 +2882,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x189)]
         CollectibleStrayFairyWoodfall13,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Bridge Room Hive"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2744,6 +2890,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x18A)]
         CollectibleStrayFairyWoodfall14,
 
+        [Visible]
         [ItemName("Woodfall Stray Fairy"), LocationName("Woodfall Platform Room Hive"), Region(Region.WoodfallTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Woodfall.")]
@@ -2751,6 +2898,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x18B)]
         CollectibleStrayFairyWoodfall15,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Snow Room Bubble"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2758,6 +2906,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x18C)]
         CollectibleStrayFairySnowhead1,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Ceiling Bubble"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2765,6 +2914,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x18D)]
         CollectibleStrayFairySnowhead2,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Dinolfos 1"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2772,6 +2922,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x18E)]
         CollectibleStrayFairySnowhead3,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Bridge Room Ledge Bubble"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2779,6 +2930,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x190)]
         CollectibleStrayFairySnowhead4,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Bridge Room Pillar Bubble"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2786,6 +2938,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x191)]
         CollectibleStrayFairySnowhead5,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Dinolfos 2"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2793,6 +2946,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x192)]
         CollectibleStrayFairySnowhead6,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Map Room Fairy"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2800,6 +2954,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x193)]
         CollectibleStrayFairySnowhead7,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Map Room Ledge"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2807,6 +2962,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x194)]
         CollectibleStrayFairySnowhead8,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Basement"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2814,6 +2970,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x195)]
         CollectibleStrayFairySnowhead9,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Twin Block"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2821,6 +2978,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x196)]
         CollectibleStrayFairySnowhead10,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Icicle Room Wall"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2828,6 +2986,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x197)]
         CollectibleStrayFairySnowhead11,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Main Room Wall"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2835,6 +2994,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x198)]
         CollectibleStrayFairySnowhead12,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Pillar Freezards"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2842,6 +3002,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x199)]
         CollectibleStrayFairySnowhead13,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Ice Puzzle"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2849,6 +3010,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x19A)]
         CollectibleStrayFairySnowhead14,
 
+        [Visible]
         [ItemName("Snowhead Stray Fairy"), LocationName("Snowhead Crate"), Region(Region.SnowheadTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Snowhead.")]
@@ -2856,6 +3018,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x19F)]
         CollectibleStrayFairySnowhead15,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Skulltula"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2863,6 +3026,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1A7)]
         CollectibleStrayFairyGreatBay1,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Pre-Boss Room Underwater Bubble"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2870,6 +3034,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1A4)]
         CollectibleStrayFairyGreatBay2,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Water Control Room Underwater Bubble"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2877,6 +3042,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1A5)]
         CollectibleStrayFairyGreatBay3,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Pre-Boss Room Bubble"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2886,6 +3052,7 @@ namespace MMR.Randomizer.GameObjects
 
         // A8 empty
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Waterwheel Room Upper"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2893,6 +3060,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1A9)]
         CollectibleStrayFairyGreatBay5,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Green Valve"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2900,6 +3068,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1AA)]
         CollectibleStrayFairyGreatBay6,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Seesaw Room"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2907,6 +3076,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1AB)]
         CollectibleStrayFairyGreatBay7,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Waterwheel Room Lower"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2914,6 +3084,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1AC)]
         CollectibleStrayFairyGreatBay8,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Entrance Torches"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2921,6 +3092,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1AD)]
         CollectibleStrayFairyGreatBay9,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Bio Babas"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2928,6 +3100,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1AE)]
         CollectibleStrayFairyGreatBay10,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Underwater Barrel"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2935,6 +3108,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1AF)]
         CollectibleStrayFairyGreatBay11,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Whirlpool Jar"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2942,6 +3116,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B0)]
         CollectibleStrayFairyGreatBay12,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Whirlpool Barrel"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2949,6 +3124,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B1)]
         CollectibleStrayFairyGreatBay13,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Dexihands Jar"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2956,6 +3132,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B2)]
         CollectibleStrayFairyGreatBay14,
 
+        [Visible]
         [ItemName("Great Bay Stray Fairy"), LocationName("Great Bay Ledge Jar"), Region(Region.GreatBayTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Great Bay.")]
@@ -2963,6 +3140,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B3)]
         CollectibleStrayFairyGreatBay15,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Mirror Sun Block"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -2970,6 +3148,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B4)]
         CollectibleStrayFairyStoneTower1,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Eyegore"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -2977,6 +3156,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B5)]
         CollectibleStrayFairyStoneTower2,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Lava Room Fire Ring"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -2984,6 +3164,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B6)]
         CollectibleStrayFairyStoneTower3,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Updraft Fire Ring"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -2991,6 +3172,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B7)]
         CollectibleStrayFairyStoneTower4,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Mirror Sun Switch"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -2998,6 +3180,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B8)]
         CollectibleStrayFairyStoneTower5,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Boss Warp"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3005,6 +3188,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1B9)]
         CollectibleStrayFairyStoneTower6,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Wizzrobe"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3012,6 +3196,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1BA)]
         CollectibleStrayFairyStoneTower7,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Death Armos"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3019,6 +3204,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1BB)]
         CollectibleStrayFairyStoneTower8,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Updraft Frozen Eye"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3026,6 +3212,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1BC)]
         CollectibleStrayFairyStoneTower9,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Thin Bridge"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3033,6 +3220,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1BD)]
         CollectibleStrayFairyStoneTower10,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Basement Ledge"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3040,6 +3228,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1BE)]
         CollectibleStrayFairyStoneTower11,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Statue Eye"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3047,6 +3236,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1BF)]
         CollectibleStrayFairyStoneTower12,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Underwater"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3054,6 +3244,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1C0)]
         CollectibleStrayFairyStoneTower13,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Bridge Crystal"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3061,6 +3252,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1C1)]
         CollectibleStrayFairyStoneTower14,
 
+        [Visible]
         [ItemName("Stone Tower Stray Fairy"), LocationName("Stone Tower Lava Room Ledge"), Region(Region.StoneTowerTemple)]
         [GossipLocationHint("a lost creature"), GossipItemHint("a lost fairy")]
         [ShopText("Collect 15 and return them to the Fairy Fountain in Stone Tower.")]
@@ -3068,6 +3260,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1C2)]
         CollectibleStrayFairyStoneTower15,
 
+        [Purchaseable]
         [RupeeRepeatable]
         [Repeatable]
         [ItemName("Purple Rupee"), LocationName("Lottery"), Region(Region.WestClockTown)]
@@ -3085,7 +3278,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x13D)]
         MundaneItemBankBlueRupee,
 
-        [Repeatable, Temporary, CycleRepeatable, Overwritable]
+        [Repeatable, Temporary, CycleRepeatable, Overwritable, Purchaseable]
         [ItemName("Chateau Romani"), LocationName("Milk Bar Chateau"), Region(Region.EastClockTown)]
         [GossipLocationHint("a town shop"), GossipItemHint("a dairy product", "an adult beverage")]
         [ShopText("Drink it to get lasting stamina for your magic power.", isMultiple: true)]
@@ -3093,7 +3286,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x180)]
         ShopItemMilkBarChateau,
 
-        [Repeatable, Temporary, CycleRepeatable, Overwritable]
+        [Repeatable, Temporary, CycleRepeatable, Overwritable, Purchaseable]
         [ItemName("Milk"), LocationName("Milk Bar Milk"), Region(Region.EastClockTown)]
         [GossipLocationHint("a town shop"), GossipItemHint("a dairy product", "the produce of cows")]
         [ShopText("Recover five hearts with one drink. Contains two helpings.", isMultiple: true)]
@@ -3105,6 +3298,7 @@ namespace MMR.Randomizer.GameObjects
         [Repeatable]
         [ItemName("Purple Rupee"), LocationName("Deku Playground Any Day"), Region(Region.NorthClockTown)]
         [GossipLocationHint("a game for scrubs", "a playground", "a town game"), GossipItemHint("currency", "money", "cash", "wealth", "riches and stuff")]
+        [GossipCombineOrder(0), GossipCombine(HeartPieceDekuPlayground, "Deku Playground")]
         [ShopText("This is worth 50 rupees.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0x133)]
@@ -3114,6 +3308,7 @@ namespace MMR.Randomizer.GameObjects
         [Repeatable]
         [ItemName("Purple Rupee"), LocationName("Honey and Darling Any Day"), Region(Region.EastClockTown)]
         [GossipLocationHint("a town game"), GossipItemHint("currency", "money", "cash", "wealth", "riches and stuff")]
+        [GossipCombineOrder(0), GossipCombine(HeartPieceHoneyAndDarling, "Honey and Darling")]
         [ShopText("This is worth 50 rupees.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0x183)]
@@ -3146,7 +3341,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x18F)]
         MundaneItemPictographContestRedRupee,
 
-        [Repeatable, Temporary, CycleRepeatable]
+        [Repeatable, Temporary, CycleRepeatable, Purchaseable]
         [ItemName("Magic Bean"), LocationName("Swamp Scrub Purchase"), Region(Region.SouthernSwamp)]
         [GossipLocationHint("a southern merchant"), GossipItemHint("a plant seed")]
         [ChestType(ChestTypeAttribute.ChestType.LargeGold)]
@@ -3154,7 +3349,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x19B)]
         ShopItemBusinessScrubMagicBean,
 
-        [Repeatable, Temporary, CycleRepeatable, Overwritable]
+        [Repeatable, Temporary, CycleRepeatable, Overwritable, Purchaseable]
         [ItemName("Green Potion"), LocationName("Ocean Scrub Purchase"), Region(Region.ZoraHall)]
         [GossipLocationHint("a western merchant"), GossipItemHint("a magic potion", "a green drink")]
         [ShopText("Replenishes your magic power.")]
@@ -3162,7 +3357,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x19C)]
         ShopItemBusinessScrubGreenPotion,
 
-        [Repeatable, Temporary, CycleRepeatable, Overwritable]
+        [Repeatable, Temporary, CycleRepeatable, Overwritable, Purchaseable]
         [ItemName("Blue Potion"), LocationName("Canyon Scrub Purchase"), Region(Region.IkanaCanyon)]
         [GossipLocationHint("an eastern merchant"), GossipItemHint("consumable strength", "a magic potion", "a blue drink")]
         [ShopText("Replenishes both life energy and magic power.")]
@@ -3178,7 +3373,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x19E)]
         MundaneItemZoraStageLightsBlueRupee,
 
-        [Repeatable, Temporary, CycleRepeatable, Overwritable]
+        [Repeatable, Temporary, CycleRepeatable, Overwritable, Purchaseable]
         [ItemName("Milk"), LocationName("Gorman Bros Milk Purchase"), Region(Region.MilkRoad)]
         [GossipLocationHint("a shady gentleman", "a dodgy seller", "a shady dealer"), GossipItemHint("a dairy product", "the produce of cows")]
         [ShopText("Recover five hearts with one drink. Contains two helpings.", isMultiple: true)]
@@ -3188,7 +3383,8 @@ namespace MMR.Randomizer.GameObjects
 
         [Repeatable]
         [ItemName("Purple Rupee"), LocationName("Ocean Spider House Day 2 Reward"), Region(Region.GreatBayCoast)]
-        [GossipLocationHint("a gold spider"), GossipItemHint("currency", "money", "cash", "wealth", "riches and stuff"), GossipCompetitiveHint(0, nameof(GameplaySettings.AddSkulltulaTokens))]
+        [GossipLocationHint("a gold spider"), GossipItemHint("currency", "money", "cash", "wealth", "riches and stuff"), GossipCompetitiveHint(0, nameof(GameplaySettings.AddSkulltulaTokens), false)]
+        [GossipCombineOrder(1), GossipCombine(UpgradeGiantWallet, "Ocean Spider House"), GossipCombine(MundaneItemOceanSpiderHouseDay3RedRupee, "Ocean Spider House")]
         [ShopText("This is worth 50 rupees.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0x134)]
@@ -3196,7 +3392,8 @@ namespace MMR.Randomizer.GameObjects
 
         [Repeatable]
         [ItemName("Red Rupee"), LocationName("Ocean Spider House Day 3 Reward"), Region(Region.GreatBayCoast)]
-        [GossipLocationHint("a gold spider"), GossipItemHint("currency", "money", "cash", "wealth", "riches and stuff"), GossipCompetitiveHint(0, nameof(GameplaySettings.AddSkulltulaTokens))]
+        [GossipLocationHint("a gold spider"), GossipItemHint("currency", "money", "cash", "wealth", "riches and stuff"), GossipCompetitiveHint(0, nameof(GameplaySettings.AddSkulltulaTokens), false)]
+        [GossipCombineOrder(2), GossipCombine(MundaneItemOceanSpiderHouseDay2PurpleRupee, "Ocean Spider House"), GossipCombine(UpgradeGiantWallet, "Ocean Spider House")]
         [ShopText("This is worth 20 rupees.")]
         [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
         [GetItemIndex(0x1A3)]
@@ -3283,6 +3480,7 @@ namespace MMR.Randomizer.GameObjects
         [GetItemIndex(0x1CA)]
         MundaneItemCuriosityShopGoldRupee,
 
+        [Visible, Purchaseable]
         [Repeatable, Temporary, Overwritable]
         [ItemName("Seahorse"), LocationName("Fisherman Pictograph"), Region(Region.GreatBayCoast)]
         [GossipLocationHint("a fisherman"), GossipItemHint("a sea creature")]
@@ -5735,6 +5933,50 @@ namespace MMR.Randomizer.GameObjects
         OwlActivationIkanaCanyon,
         [StartingItem(0xC5CDFA, 0x02)]
         [ItemName("Stone Tower Owl"), LocationName("Stone Tower Owl Statue"), Region(Region.StoneTower)]
-        OwlActivationStoneTower
+        OwlActivationStoneTower,
+
+        GossipTerminaSouth,
+        GossipSwampPotionShop,
+        GossipMountainSpringPath,
+        GossipMountainPath,
+        GossipOceanZoraGame,
+        GossipCanyonRoad,
+        GossipCanyonDock,
+        GossipCanyonSpiritHouse,
+        GossipTerminaMilk,
+        GossipTerminaWest,
+        GossipTerminaNorth,
+        GossipTerminaEast,
+        GossipRanchTree,
+        GossipRanchBarn,
+        GossipMilkRoad,
+        GossipOceanFortress,
+        GossipSwampRoad,
+        GossipTerminaObservatory,
+        GossipRanchCuccoShack,
+        GossipRanchRacetrack,
+        GossipRanchEntrance,
+        GossipCanyonRavine,
+        GossipMountainSpringFrog,
+        GossipSwampSpiderHouse,
+        GossipTerminaGossipLarge,
+        GossipTerminaGossipGuitar,
+        GossipTerminaGossipPipes,
+        GossipTerminaGossipDrums,
+
+        [ItemName("Ice Trap")]
+        [GossipItemHint("a cold surprise", "an icy breeze")]
+        [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
+        [ExclusiveItem(0xB0)]
+        [ExclusiveItemGraphic(0, 0)]
+        [ExclusiveItemMessage(0x9000, "\u0017You are a \u0003FOOL\u0000!\u0018\u00BF")]
+        IceTrap = -1,
+
+        [ItemName("Recovery Heart")]
+        [GossipItemHint("health")]
+        [ChestType(ChestTypeAttribute.ChestType.SmallWooden)]
+        [ShopText("Replenishes a small amount of your life energy.")]
+        [GetItemIndex(0x0A)]
+        RecoveryHeart = -2,
     }
 }

@@ -1,4 +1,4 @@
-using MMR.Common.Extensions;
+﻿using MMR.Common.Extensions;
 using MMR.Randomizer.Attributes.Entrance;
 using MMR.Randomizer.Constants;
 using MMR.Randomizer.Extensions;
@@ -27,19 +27,19 @@ namespace MMR.Randomizer.Utils
             {
                 if (exit == Item.EntranceTerminaFieldFromAstralObservatoryTelescope)
                 {
-                    ResourceUtils.ApplyHack(Values.ModsDirectory, "fix-telescope-music");
+                    ResourceUtils.ApplyHack(Resources.mods.fix_telescope_music);
                 }
                 if (exit == Item.EntranceDekuPalaceFromDekuPalace)
                 {
-                    ResourceUtils.ApplyHack(Values.ModsDirectory, "fix-deku-patrol-exit");
+                    ResourceUtils.ApplyHack(Resources.mods.fix_deku_patrol_exit);
                 }
                 if (exit == Item.EntranceZoraCapeFromGreatBayTempleClear)
                 {
-                    ResourceUtils.ApplyHack(Values.ModsDirectory, "fix-greatbay-clear-exit");
+                    ResourceUtils.ApplyHack(Resources.mods.fix_greatbay_clear_exit);
                 }
                 if (exit == Item.EntranceIkanaCanyonFromIkanaClear)
                 {
-                    ResourceUtils.ApplyHack(Values.ModsDirectory, "fix-ikana-clear-exit");
+                    ResourceUtils.ApplyHack(Resources.mods.fix_ikana_clear_exit);
                 }
             }
 
