@@ -515,16 +515,23 @@ namespace MMR.UI.Forms
 
         private void InitializeTransformationFormSettings()
         {
+            // GOAL: Implement random tunic color button
             foreach (var form in Enum.GetValues<TransformationForm>())
             {
+                // Create page for each race: Human, Deku, Goron, Zora, FD
                 var tabPage = new TabPage
                 {
                     Tag = form,
                     Text = addSpacesRegex.Replace(form.ToString(), " $1"),
                     UseVisualStyleBackColor = true,
                 };
+                // Create the box that you click on to bring up the color wheel
                 var bTunic = CreateTunicColorButton(form);
                 tabPage.Controls.Add(bTunic);
+                // HERE: ADD RANDOM BUTTON
+                var randomTunicColorButton = CreateRandomTunicColorButton(form);
+                tabPage.Controls.Add(randomTunicColorButton);
+                // Create check box for enabling the color change button
                 tabPage.Controls.Add(CreateTunicColorCheckBox(form, bTunic));
                 if (form != TransformationForm.FierceDeity)
                 {
@@ -635,13 +642,30 @@ namespace MMR.UI.Forms
                 Tag = transformationForm,
                 Name = "bTunic",
                 Location = new Point(111, 3),
-                Size = new Size(135, 23),
+                Size = new Size(50, 23),
                 BackColor = Color.FromArgb(0x1E, 0x69, 0x1B),
                 FlatStyle = FlatStyle.Flat,
                 Text = "Default",
             };
             TooltipBuilder.SetTooltip(button, "Select the color of this form's Tunic.");
             button.Click += bTunic_Click;
+            return button;
+        }
+
+        // HERE
+        private Button CreateRandomTunicColorButton(TransformationForm transformationForm)
+        {
+            var button = new Button
+            {
+                Tag = transformationForm,
+                Name = "bRandomTunicColor",
+                Location = new Point(170, 3),
+                Size = new Size(80, 23),
+                FlatStyle = FlatStyle.Flat,
+                Text = "Random"
+            };
+            TooltipBuilder.SetTooltip(button, "Randomize the color of the tunic!");
+            button.Click += bRandomTunicColor_Click;
             return button;
         }
 
@@ -821,6 +845,20 @@ namespace MMR.UI.Forms
 
                 _isUpdating = false;
             }
+        }
+
+        private void bRandomTunicColor_Click(object sender, EventArgs e)
+        {
+            var randomNumberGenerator = new Random();
+            var r = System.Convert.ToByte(randomNumberGenerator.Next() % 255);
+            var g = System.Convert.ToByte(randomNumberGenerator.Next() % 255);
+            var b = System.Convert.ToByte(randomNumberGenerator.Next() % 255);
+
+            var c = Color.FromArgb(r, g, b);
+
+            var button = (Button)sender;
+            var form = (TransformationForm)button.Tag;
+            _configuration.CosmeticSettings.TunicColors[form] = c;
         }
 
         private void bopen_Click(object sender, EventArgs e)
