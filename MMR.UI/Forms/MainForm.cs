@@ -661,8 +661,9 @@ namespace MMR.UI.Forms
                 Name = "bRandomTunicColor",
                 Location = new Point(170, 3),
                 Size = new Size(80, 23),
-                FlatStyle = FlatStyle.Flat,
-                Text = "Random"
+                FlatStyle = FlatStyle.Standard,
+                Text = "Random",
+                BackColor = Color.Transparent,
             };
             TooltipBuilder.SetTooltip(button, "Randomize the color of the tunic!");
             button.Click += bRandomTunicColor_Click;
@@ -859,6 +860,13 @@ namespace MMR.UI.Forms
             var button = (Button)sender;
             var form = (TransformationForm)button.Tag;
             _configuration.CosmeticSettings.TunicColors[form] = c;
+
+            var customColorCheckBox = tFormCosmetics.SelectedTab.Controls.OfType<CheckBox>().First();
+            var customColorButton = tFormCosmetics.SelectedTab.Controls.OfType<Button>().First();
+
+            customColorCheckBox.Checked = true;
+            customColorButton.Text = "???";
+            customColorButton.BackColor = Color.Transparent;
         }
 
         private void bopen_Click(object sender, EventArgs e)
