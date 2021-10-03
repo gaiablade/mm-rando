@@ -14,6 +14,7 @@ namespace MMR.Randomizer.Asm
         DekuMask = 0x32,
         GoronMask = 0x33,
         ZoraMask = 0x34,
+        BunnyHood = 0x39,
         None = 0xFF,
     }
 
@@ -186,6 +187,7 @@ namespace MMR.Randomizer.Asm
                 new DPadItem(DPadValue.DekuMask, DPadCategory.TransformationMasks, "Deku Mask"),
                 new DPadItem(DPadValue.GoronMask, DPadCategory.TransformationMasks, "Goron Mask"),
                 new DPadItem(DPadValue.ZoraMask, DPadCategory.TransformationMasks, "Zora Mask"),
+                new DPadItem(DPadValue.BunnyHood, DPadCategory.NormalMasks, "Bunny Hood"),
             };
         }
 
